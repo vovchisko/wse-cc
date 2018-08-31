@@ -22,5 +22,8 @@
   "bugs": {
     "url": "https://github.com/vovchisko/wse-cc/issues"
   },
-  "homepage": "https://github.com/vovchisko/wse-cc#readme"
+  "homepage": "https://github.com/vovchisko/wse-cc#readme",
+  "dependencies": {
+    "wse": "^1.3.27"
+  }
 }
