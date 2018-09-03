@@ -1,8 +1,8 @@
 const {WseCCMaster, WseCCDemon, WseCCClient, WSE_REASON} = require('./node');
 
 
-const CLIENTS_MASTER_PORT = 4200;
-const DEMONS_PORT = 4201;
+const CLIENTS_MASTER_PORT = 4800;
+const DEMONS_PORT = 4801;
 const DEFAULT_CORE_PROCESS = './test_core.js';
 
 //
@@ -20,6 +20,7 @@ async function on_player_auth(user_data, resolve) {
 const master = new WseCCMaster({port: CLIENTS_MASTER_PORT}, on_player_auth);
 master.name = 'MASTER';
 master.logging = true;
+master.default_core_cmd = DEFAULT_CORE_PROCESS;
 
 // it's about users
 master.on('join', (client) => {
@@ -45,10 +46,10 @@ function on_demon_auth(data, resolve) {
 master.listen_demons({port: DEMONS_PORT}, on_demon_auth);
 
 // start new cores
-master.spawn_core('core-1', DEFAULT_CORE_PROCESS);
-master.spawn_core('core-2', DEFAULT_CORE_PROCESS);
-master.spawn_core('core-3', DEFAULT_CORE_PROCESS);
-master.spawn_core('core-4', DEFAULT_CORE_PROCESS);
+master.spawn_core('core-1');
+master.spawn_core('core-2', null, {somaparams: 'here'});
+master.spawn_core('core-3');
+master.spawn_core('core-4', DEFAULT_CORE_PROCESS, {params_also: 'here too'});
 
 // ready for user connections
 master.init();
@@ -70,11 +71,8 @@ setInterval(() => master.distribute_cores(), 200);
 const demon1 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 const demon2 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 
-demon1.ports_range = [4400, 4420];
-demon1.cmd_line = './test_core.js';
-
-demon2.ports_range = [4500, 4520];
-demon2.cmd_line = './test_core.js';
+demon1.ports_range = [4900, 4920];
+demon2.ports_range = [4921, 4940];
 
 demon1.connect('DEM-A', 'ULTRA-SECRET-KEY-1');
 demon2.connect('DEM-B', 'ULTRA-SECRET-KEY-2');

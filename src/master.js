@@ -16,7 +16,7 @@ class WseCCMaster extends WseServer {
         this.emit_message_prefix = 'u:';
         this.emit_core_prefix = 'c:';
         this.emit_demon_prefix = 'd:';
-
+        this.default_core_cmd = './core.js';
         this.cores = {};
 
         this.on('leave', (client, code, reason) => {
@@ -203,7 +203,7 @@ class WseCCMaster extends WseServer {
         }
     }
 
-    spawn_core(id, cmd, args) {
+    spawn_core(id, cmd = null, args) {
         if (this.cores[id]) throw new Error(`Core '${id}' already spawned!`);
 
         let core = this.cores[id] = {
@@ -212,7 +212,7 @@ class WseCCMaster extends WseServer {
             demon_id: null,
             port: null,
             ready: false,
-            cmd: cmd,
+            cmd: cmd || this.default_core_cmd,
             args: args,
             props: {},
         };
