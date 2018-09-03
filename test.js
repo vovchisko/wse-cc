@@ -1,13 +1,15 @@
 const {WseCCMaster, WseCCDemon, WseCCClient, WSE_REASON} = require('./node');
 
 
-const CLIENTS_MASTER_PORT = 4800;
-const DEMONS_PORT = 4801;
-const DEFAULT_CORE_PROCESS = './test_core.js';
+
 
 //
 // 1 - MASTER SCRIPT
 //
+
+
+const CLIENTS_MASTER_PORT = 4800;
+const DEMONS_PORT = 4801;
 
 
 // how we authorize users on master?
@@ -20,7 +22,7 @@ async function on_player_auth(user_data, resolve) {
 const master = new WseCCMaster({port: CLIENTS_MASTER_PORT}, on_player_auth);
 master.name = 'MASTER';
 master.logging = true;
-master.default_core_cmd = DEFAULT_CORE_PROCESS;
+master.default_core_cmd = './test_core.js';
 
 // it's about users
 master.on('join', (client) => {
@@ -49,7 +51,7 @@ master.listen_demons({port: DEMONS_PORT}, on_demon_auth);
 master.spawn_core('core-1');
 master.spawn_core('core-2', null, {somaparams: 'here'});
 master.spawn_core('core-3');
-master.spawn_core('core-4', DEFAULT_CORE_PROCESS, {params_also: 'here too'});
+master.spawn_core('core-4', './another.js', {params_also: 'here too'});
 
 // ready for user connections
 master.init();
@@ -57,20 +59,20 @@ master.init();
 // or maybe we need to remove some core
 setTimeout(() => master.despawn_core('core-4'), 2000);
 
-setInterval(() => master.distribute_cores(), 200);
+// call this function from time to time to distribute
+// new spawned cores, or if some demons fall or not connected yet.
+setInterval(() => master.distribute_cores(), 1000);
 
 //
 // 2 - DEMONS SCRIPT
 //
 
-
-// call this function from time to time to distribute
-// new spawned cores, or if some demons fall or not connected yet.
-
-//start 2 demons
+//start 2 demons. ususally one is more thta enough on one machine, beu let's start two for example
 const demon1 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 const demon2 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 
+// as we started 2 demons on the same machine
+// ports range should be different
 demon1.ports_range = [4900, 4920];
 demon2.ports_range = [4921, 4940];
 
