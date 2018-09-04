@@ -85,7 +85,7 @@ demon2.connect('DEM-B', 'ULTRA-SECRET-KEY-2');
 
 // everything just like in ``wse``.
 const client = new WseCCClient('ws://localhost:' + CLIENTS_MASTER_PORT);
-client.on('open', () => console.log(' >>>> client connected!'));
+client.on('open', (data) => console.log(' >>>> client connected!', data));
 client.on('close', (code, reason) => console.log(' >>>> client disconnected!', code, reason));
 client.on('message', (c, m) => console.log(' >>>> message', c, m));
 client.on('error', (err) => console.log(' >>>> err', err));
