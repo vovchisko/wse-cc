@@ -18,6 +18,7 @@ class WseCCCore extends WseServer {
 
         process.on('disconnect', () => {
             this.log('OH MY GOSH! PARENT DISCONNECTED!');
+            this.emit('ipc:disconnect');
             process.exit(0);
         });
 
@@ -31,7 +32,9 @@ class WseCCCore extends WseServer {
                     console.log(f, 'is not a function', msg.dat);
                 }
             } else {
-                this.emit('message', msg.c, msg.dat);
+                // what about performance? is it necessary?
+                this.emit('ipc:message', msg.c, msg.dat);
+                this.emit('ipc:' + msg.c, msg.dat);
             }
         });
 
