@@ -19,12 +19,8 @@ class WseCCMaster extends WseServer {
         this.default_core_cmd = './core.js';
         this.cores = {};
 
-        this.on('leave', (client, code, reason) => {
-            /* todo:
-             * 1 - if user has key - remove it.
-             * 2 - if user connected to any core - send commadn to disconnect
-             */
-        });
+        // todo: do we need to tell cores about it?
+        // this.on('leave', (client, code, reason) => { });
     }
 
     lead(client_id, core_id) {
