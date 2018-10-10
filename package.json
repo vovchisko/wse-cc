@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/vovchisko/wse-cc#readme",
   "dependencies": {
-    "wse": "^1.4.11"
+    "wse": "^1.4.12"
   }
 }
