@@ -9,10 +9,11 @@ class WseCCClient extends WseClient {
             let f = _isf(c);
             if (f) {
                 if (typeof this[f] === 'function') {
-                    console.log('func:', f, dat);
+                    //console.log('func:', f, dat);
                     this[f](dat);
                 } else {
-                    console.log('unknown function ' + f, dat);
+                    //todo: should we emit some error here?
+                    //console.log('unknown function ' + f, dat);
                 }
             }
         });
