@@ -1,8 +1,8 @@
 # wse-cc: WSE + Cross-server Controller
 
-Cheap and crazy multi-server node.js instance management ...If nothing else helped.
+Cheap and simple node.js cross-server ballancer for ws-connected users. With auth. And websocket. And customizable messaging protocol. And ability to communicate between server instances. And ability to run different types of instances. Relatively simple. ...If nothing else helped.
 
-Wait, wait! All this things based on [``wse``](https://www.npmjs.com/package/wse). Suspicious wrapper for ws with authorization and customizable protocol. Useful when you talking WS a lot. It looks like original WS, and even smells the same. But a little bit cooler. About 25% cooler.
+Wait! Wait, wait. All this things based on [``wse``](https://www.npmjs.com/package/wse). Suspicious wrapper for ws with authorization and customizable protocol. Useful when you talking WS a lot. It looks like original WS, and even smells the same. But a little bit cooler. About 25% cooler.
 
 Look at [``wse``](https://www.npmjs.com/package/wse) before you start.
 
