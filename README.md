@@ -1,4 +1,4 @@
-# wse-cc: WebSocket enchanted + crazy cluster
+# wse-cc: WSE + Cross-server Controller
 
 Cheap and crazy multi-server node.js instance management ...If nothing else helped.
 
