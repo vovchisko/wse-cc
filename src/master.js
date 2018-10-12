@@ -105,7 +105,8 @@ class WseCCMaster extends WseServer {
                     this.log(f, 'is not a function', dat);
                 }
             } else {
-                this.emit(this.emit_demon_prefix + c, demon.id, dat);
+                if (!this.emit(this.emit_demon_prefix + c, demon.id, dat) && this.emit_messages_ignored)
+                    this.emit(this.emit_demon_prefix + '_ignored', demon.id, c, dat)
             }
         });
 
@@ -152,7 +153,8 @@ class WseCCMaster extends WseServer {
     }
 
     _core_channel(demon, dat) {
-        this.emit(this.emit_core_prefix + dat.c, dat.core, dat);
+        if (!this.emit(this.emit_core_prefix + dat.core, dat) && this.emit_messages_ignored)
+            this.emit(this.emit_core_prefix + '_ignored', dat.core, dat.c, dat);
     }
 
     _core_props(demon, co) {
