@@ -153,7 +153,7 @@ class WseCCMaster extends WseServer {
     }
 
     _core_channel(demon, dat) {
-        if (!this.emit(this.emit_core_prefix + dat.c, dat.dat) && this.emit_messages_ignored)
+        if (!this.emit(this.emit_core_prefix + dat.c, dat.core, dat.dat) && this.emit_messages_ignored)
             this.emit(this.emit_core_prefix + '_ignored', dat.core, dat.c, dat.dat);
     }
 
