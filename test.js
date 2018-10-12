@@ -22,6 +22,7 @@ async function on_player_auth(user_data, resolve) {
 const master = new WseCCMaster({port: CLIENTS_MASTER_PORT}, on_player_auth);
 master.name = 'MASTER';
 master.logging = true;
+master.emit_messages_ignored = true;
 master.default_core_cmd = './test_core.js';
 
 // it's about users
@@ -31,6 +32,9 @@ master.on('join', (client) => {
     master.lead(client.id, 'core-1');
 });
 master.on('leave', (client, code, reason) => console.log('LEAVE:', client.id, code, reason));
+master.on('d:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from demon >> ',client, c, dat)});
+master.on('c:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from core >> ',client, c, dat)});
+master.on('u:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from user >> ',client, c, dat)});
 
 // how we authorize demons? let's just use id. for example.
 // but remember - demon can be started on another machine.
@@ -56,6 +60,8 @@ master.spawn_core('core-4', './another.js', {params_also: 'here too'});
 // ready for user connections
 master.init();
 
+
+
 // or maybe we need to remove some core
 setTimeout(() => master.despawn_core('core-4'), 2000);
 
@@ -69,15 +75,15 @@ setInterval(() => master.distribute_cores(), 1000);
 
 //start 2 demons. ususally one is more thta enough on one machine, beu let's start two for example
 const demon1 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
-const demon2 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
+//const demon2 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 
 // as we started 2 demons on the same machine
 // ports range should be different
 demon1.ports_range = [4900, 4920];
-demon2.ports_range = [4921, 4940];
+//demon2.ports_range = [4921, 4940];
 
 demon1.connect('DEM-A', 'ULTRA-SECRET-KEY-1');
-demon2.connect('DEM-B', 'ULTRA-SECRET-KEY-2');
+//demon2.connect('DEM-B', 'ULTRA-SECRET-KEY-2');
 
 //
 // 3 - CLIENT PART
@@ -91,7 +97,7 @@ client.on('message', (c, m) => console.log(' >>>> message', c, m));
 client.on('error', (err) => console.log(' >>>> err', err));
 client.on('lead', (core_data) => console.log(' >>>> before connection to another core', core_data));
 
-client.core.on('open', () => console.log('just connected to another core!!!!', client.core));
+client.core.on('open', () => console.log(' >>>> just connected to another core!!!!', client.core.id));
 
 setTimeout(() => {
     client.connect({id: 'client-1'});
