@@ -191,7 +191,7 @@ class DemonCore {
 
         this.child = child_process.fork(this.cmd, cmd_args, {
             silent: true,
-            //execArgv: [`--inspect=127.0.0.1:9${port.substr(1)}`] // open chrome://inspect and add the needed host:port to debug.
+            execArgv: this.args && this.args.debug ? [`--inspect-brk=9${this.port.toString().substr(1)}`] : []
         });
         this.child.on('exit', (code, signal) => this.onexit(code, signal));
         this.child.on('message', (data) => this.onmessage(data));

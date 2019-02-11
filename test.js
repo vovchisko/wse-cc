@@ -1,8 +1,6 @@
 const {WseCCMaster, WseCCDemon, WseCCClient, WSE_REASON} = require('./node');
 
 
-
-
 //
 // 1 - MASTER SCRIPT
 //
@@ -32,9 +30,9 @@ master.on('join', (client) => {
     master.lead(client.id, 'core-1');
 });
 master.on('leave', (client, code, reason) => console.log('LEAVE:', client.id, code, reason));
-master.on('d:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from demon >> ',client, c, dat)});
-master.on('c:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from core >> ',client, c, dat)});
-master.on('u:_ignored', (client, c, dat)=>{ console.log('master not listen for messgae from user >> ',client, c, dat)});
+master.on('d:_ignored', (client, c, dat) => { console.log('master not listen for messgae from demon >> ', client, c, dat)});
+master.on('c:_ignored', (client, c, dat) => { console.log('master not listen for messgae from core >> ', client, c, dat)});
+master.on('u:_ignored', (client, c, dat) => { console.log('master not listen for messgae from user >> ', client, c, dat)});
 
 // how we authorize demons? let's just use id. for example.
 // but remember - demon can be started on another machine.
@@ -52,14 +50,13 @@ function on_demon_auth(data, resolve) {
 master.listen_demons({port: DEMONS_PORT}, on_demon_auth);
 
 // start new cores
-master.spawn_core('core-1');
+master.spawn_core('core-1', null, {debug: true});
 master.spawn_core('core-2', null, {somaparams: 'here'});
 master.spawn_core('core-3');
 master.spawn_core('core-4', './another.js', {params_also: 'here too'});
 
 // ready for user connections
 master.init();
-
 
 
 // or maybe we need to remove some core
