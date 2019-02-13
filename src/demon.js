@@ -21,7 +21,7 @@ class WseCCDemon extends WseClient {
         this.id = null;
         this._secret = null;
 
-        this.ports_range = [4300, 4320];
+        this.ports_range = [4300, 4400];
         this.ports = {};
         this.re_connect_time = 5000;
 
@@ -124,11 +124,11 @@ class WseCCDemon extends WseClient {
         if (this.cores[core.id]) throw new Error('core already exists: ' + core.id);
         this.reserve_core_port(core.id)
             .then((port) => {
-                if (!port) {
-                    this.send(_f('_core_stop'), {id: core.id, signal: 'REJECTED'});
-                    return;
-                }
-                this.cores[core.id] = new DemonCore(this, core.id, core.cmd, port, core.args);
+                if (!port) return this.send(_f('_core_stop'), {id: core.id, signal: 'REJECTED'});
+
+                core.port = port;
+
+                this.cores[core.id] = new DemonCore(this, core);
             });
     }
 
@@ -151,17 +151,19 @@ class WseCCDemon extends WseClient {
 
 
 class DemonCore {
-    constructor(demon, id, cmd, port, args) {
-        this.id = id;
+    constructor(demon, core) {
+        this.id = core.id;
         this.demon = demon;
-        this.port = port;
+        this.port = core.port;
         this.child = null;
         this.task = TASK_RUN;
-        this.args = args;
-        this.cmd = cmd;
+        this.args = core.args;
+        this.cmd = core.cmd;
         this.ready = false;
         this.falls = 0;
         this.props = {};
+        this.debug = core.debug;
+
         this.run();
     }
 
@@ -191,7 +193,7 @@ class DemonCore {
 
         this.child = child_process.fork(this.cmd, cmd_args, {
             silent: true,
-            execArgv: this.args && this.args.debug ? [`--inspect-brk=9${this.port.toString().substr(1)}`] : []
+            execArgv: this.debug ? [`--inspect-brk=9${this.port.toString().substr(1)}`] : []
         });
         this.child.on('exit', (code, signal) => this.onexit(code, signal));
         this.child.on('message', (data) => this.onmessage(data));

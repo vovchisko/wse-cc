@@ -16,7 +16,6 @@ class WseCCMaster extends WseServer {
         this.emit_message_prefix = 'u:';
         this.emit_core_prefix = 'c:';
         this.emit_demon_prefix = 'd:';
-        this.default_core_cmd = './core.js';
         this.cores = {};
 
         // todo: do we need to tell cores about it?
@@ -191,17 +190,16 @@ class WseCCMaster extends WseServer {
         if (!core) throw new Error('invalid core ID:' + core_id);
 
         if (core.state === CORE_NULL) {
-            demon.send(_f('_core_spawn'), {id: core.id, cmd: core.cmd, args: core.args});
+            demon.send(_f('_core_spawn'), {id: core.id, cmd: core.cmd, args: core.args, debug: core.debug});
             core.state = CORE_REQUESTED;
             core.demon_id = demon.id;
-
             demon.load++;
         } else {
             this.log('core already attached:', core_id, 'on', core.demon_id);
         }
     }
 
-    spawn_core(id, cmd = null, args) {
+    spawn_core(id, cmd, args, debug = false) {
         if (this.cores[id]) throw new Error(`Core '${id}' already spawned!`);
 
         let core = this.cores[id] = {
@@ -210,9 +208,10 @@ class WseCCMaster extends WseServer {
             demon_id: null,
             port: null,
             ready: false,
-            cmd: cmd || this.default_core_cmd,
+            cmd: cmd,
             args: args,
             props: {},
+            debug: debug,
         };
 
         this.attach_core(core.id);

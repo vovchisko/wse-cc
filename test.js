@@ -21,7 +21,7 @@ const master = new WseCCMaster({port: CLIENTS_MASTER_PORT}, on_player_auth);
 master.name = 'MASTER';
 master.logging = true;
 master.emit_messages_ignored = true;
-master.default_core_cmd = './test_core.js';
+const CORE = './test_core.js';
 
 // it's about users
 master.on('join', (client) => {
@@ -50,17 +50,19 @@ function on_demon_auth(data, resolve) {
 master.listen_demons({port: DEMONS_PORT}, on_demon_auth);
 
 // start new cores
-master.spawn_core('core-1', null, {debug: true});
-master.spawn_core('core-2', null, {somaparams: 'here'});
-master.spawn_core('core-3');
-master.spawn_core('core-4', './another.js', {params_also: 'here too'});
+master.spawn_core('core-1', CORE);
+master.spawn_core('core-2', CORE);
+master.spawn_core('core-3', CORE);
+
+// now tricky core - 4rd param - debug. default = false;
+master.spawn_core('core-4', CORE, {params_also: 'here too'}, true);
 
 // ready for user connections
 master.init();
 
 
 // or maybe we need to remove some core
-setTimeout(() => master.despawn_core('core-4'), 2000);
+setTimeout(() => master.despawn_core('core-4'), 22000);
 
 // call this function from time to time to distribute
 // new spawned cores, or if some demons fall or not connected yet.
