@@ -162,7 +162,7 @@ class DemonCore {
         this.ready = false;
         this.falls = 0;
         this.props = {};
-        this.debug = core.debug;
+        this.debug_port = null;
 
         this.run();
     }
@@ -191,10 +191,21 @@ class DemonCore {
         cmd_args.push('port=' + this.port);
         for (let i in this.args) cmd_args.push(i + '=' + this.args[i]);
 
+        if (this.args && this.args.debug) {
+            if (this.args.debug === true) {
+                this.debug_port = `9${this.port.toString().substr(1)}`;
+            } else {
+                this.debug_port = this.args.debug;
+            }
+            this.log(`core ${this.id} starting in debug mode and waiting for debugger! port:${this.debug_port}`);
+        }
+
         this.child = child_process.fork(this.cmd, cmd_args, {
             silent: true,
-            execArgv: this.debug ? [`--inspect-brk=9${this.port.toString().substr(1)}`] : []
+            execArgv: this.debug_port ? [`--inspect-brk=${this.debug_port}`] : []
         });
+
+
         this.child.on('exit', (code, signal) => this.onexit(code, signal));
         this.child.on('message', (data) => this.onmessage(data));
 

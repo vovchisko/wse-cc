@@ -190,7 +190,7 @@ class WseCCMaster extends WseServer {
         if (!core) throw new Error('invalid core ID:' + core_id);
 
         if (core.state === CORE_NULL) {
-            demon.send(_f('_core_spawn'), {id: core.id, cmd: core.cmd, args: core.args, debug: core.debug});
+            demon.send(_f('_core_spawn'), {id: core.id, cmd: core.cmd, args: core.args});
             core.state = CORE_REQUESTED;
             core.demon_id = demon.id;
             demon.load++;
@@ -199,7 +199,7 @@ class WseCCMaster extends WseServer {
         }
     }
 
-    spawn_core(id, cmd, args, debug = false) {
+    spawn_core(id, cmd, args) {
         if (this.cores[id]) throw new Error(`Core '${id}' already spawned!`);
 
         let core = this.cores[id] = {
@@ -211,7 +211,6 @@ class WseCCMaster extends WseServer {
             cmd: cmd,
             args: args,
             props: {},
-            debug: debug,
         };
 
         this.attach_core(core.id);

@@ -12,7 +12,7 @@ const DEMONS_PORT = 4801;
 
 // how we authorize users on master?
 async function on_player_auth(user_data, resolve) {
-    console.log(user_data)
+    console.log(user_data);
     if (!user_data || !user_data.id) return resolve(null);
     return resolve(user_data.id);
 }
@@ -30,9 +30,9 @@ master.on('join', (client) => {
     master.lead(client.id, 'core-1');
 });
 master.on('leave', (client, code, reason) => console.log('LEAVE:', client.id, code, reason));
-master.on('d:_ignored', (client, c, dat) => { console.log('master not listen for messgae from demon >> ', client, c, dat)});
-master.on('c:_ignored', (client, c, dat) => { console.log('master not listen for messgae from core >> ', client, c, dat)});
-master.on('u:_ignored', (client, c, dat) => { console.log('master not listen for messgae from user >> ', client, c, dat)});
+master.on('d:_ignored', (client, c, dat) => { console.log('no listener for messgae from demon >> ', client, c, dat)});
+master.on('c:_ignored', (client, c, dat) => { console.log('no listener for messgae from core >> ', client, c, dat)});
+master.on('u:_ignored', (client, c, dat) => { console.log('no listener for messgae from user >> ', client, c, dat)});
 
 // how we authorize demons? let's just use id. for example.
 // but remember - demon can be started on another machine.
@@ -55,7 +55,7 @@ master.spawn_core('core-2', CORE);
 master.spawn_core('core-3', CORE);
 
 // now tricky core - 4rd param - debug. default = false;
-master.spawn_core('core-4', CORE, {params_also: 'here too'}, true);
+master.spawn_core('core-4', CORE, {params_also: 'here too', debug: 9999});
 
 // ready for user connections
 master.init();
@@ -72,7 +72,7 @@ setInterval(() => master.distribute_cores(), 1000);
 // 2 - DEMONS SCRIPT
 //
 
-//start 2 demons. ususally one is more thta enough on one machine, beu let's start two for example
+//start 2 demons. ususally one is more than enough on one machine, beu let's start two for example
 const demon1 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 //const demon2 = new WseCCDemon('ws://localhost:' + DEMONS_PORT);
 

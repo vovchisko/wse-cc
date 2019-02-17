@@ -14,7 +14,7 @@ I saw many great balancers, WebSocket wrappers, process managers, clusters and o
 ## Before we start – who is who?
 ``master`` - main process with known host/port. So, demons and users connecting here.
 ``demon`` - Process that always running on some server. Demon start cores, when master ask for it. Killing it and proxying messages between master and server.
-``core`` - Most child process, and actually game-instance. It can be room, level, or game session. When core started – it also starting with websocket server on port, that automatically selected by demon before. And demon also report about this host/port to master. So, master know how user can connect to master.
+``core`` - Child process. It can be room, level, or game session. When core started – it also starting with websocket server on port, that automatically selected by demon before. And demon also report about this host/port to master. So, master know how user can connect to master.
 
 ## So what we got?
 
@@ -40,7 +40,6 @@ Also for test (or for start) you can start master and demon on the same machine.
 
 
 ## THAT POOR EXAMPLE
-**BE ACCURATE! THIS IS EXTREMELY POOR EXAMPLE!**
 For details look at ``./test.js``. More clear examples will come with release.
 
 #### master.js
@@ -89,17 +88,17 @@ master.spawn_core('core-2', CORE);
 master.spawn_core('core-3', CORE);
 
 // now tricky core - 4rd param - debug. default = false;
-master.spawn_core('core-4', './another.js', {params_also: 'here too'}, true);
+master.spawn_core('core-4', './another.js', {params_also: 'here too', debug: 9999});
 
 // ready for user connections
 master.init();
 
 // or maybe we need to remove some core
-setTimeout(() => master.despawn_core('core-4'), 2000);
+master.despawn_core('core-4');
 
 // call this function from time to time to distribute
 // new spawned cores, or if some demons fall or not connected yet.
-setInterval(() => master.distribute_cores(), 1000);
+master.distribute_cores();
 
 ```
 
