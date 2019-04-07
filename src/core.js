@@ -24,12 +24,13 @@ class WseCCCore extends WseServer {
 
         process.on('message', (msg) => {
             let f = _isf(msg.c);
+
             if (f) {
                 if (typeof this[f] === 'function') {
-                    console.log('func:', f, msg.dat);
+                    this.log('func:', f, msg.dat);
                     return this[f](msg.dat);
                 } else {
-                    console.log(f, 'is not a function', msg.dat);
+                    this.log(f, 'is not a function', msg.dat);
                 }
             } else {
                 // what about performance? is it necessary?
@@ -47,6 +48,10 @@ class WseCCCore extends WseServer {
     _stop(dat) {
         this.log(' _stop from demon', dat);
         process.exit(0);
+    }
+
+    _kick(dat) {
+        this.drop_client(dat.client_id, dat.reason || null);
     }
 
     // anything sent by this will be re-sent to masterm if it's not special demon command.

@@ -31,6 +31,7 @@ class WseCCClient extends WseClient {
     }
 
     _lead(dat) {
+        // keep in mind that this operatin might be done by the core as well.
         if (this.core.is_online) this.core.close();
         this.core.url = 'ws://' + dat.addr + '/ws-core';
         this.core.connect(this._payload); //the same payload for master and any core, right?

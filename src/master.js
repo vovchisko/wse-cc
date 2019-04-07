@@ -1,4 +1,4 @@
-const {WseServer} = require('wse');
+const {WseServer, WSE_REASON} = require('wse');
 const {_isf, _f} = require('./shared');
 
 const CORE_NULL = 'null'; // nothing happens, no demon
@@ -24,8 +24,14 @@ class WseCCMaster extends WseServer {
 
     lead(client_id, core_id) {
         let client = this.clients[client_id];
+
         // err?
         if (!client) return this.log('client not exists: ' + client_id);
+
+        if (client.core_id) {
+            this.send2core(client.core_id, _f('_kick'), {client_id: client.id, reason: 'lead'})
+        }
+
         let core = this.cores[core_id];
         if (!core) return this.log('core not exists: ' + core_id);
         let demon = this.demons[core.demon_id];
