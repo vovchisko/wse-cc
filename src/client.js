@@ -11,7 +11,7 @@ class WseCCClient extends WseClient {
                 if (typeof this[f] === 'function') {
                     this[f](dat)
                 } else {
-                    console.error('warning: unknown function ' + f, dat);
+                    console.error('warning: unknown function ' + f, dat)
                 }
             }
         })
@@ -20,16 +20,17 @@ class WseCCClient extends WseClient {
         this.core = new WseClient('', ws_params, protocol)
     }
 
-    connect(payload) {
+    connect(payload, params) {
         // remember payload for reconnect
         this._payload = payload
-        super.connect(this._payload)
+        this._params = params
+        super.connect(this._payload, this._params)
     }
 
     _lead(dat) {
         if (this.core.is_online) this.core.close()
         this.core.url = 'ws://' + dat.addr + '/ws-core'
-        this.core.connect(this._payload)
+        this.core.connect(this._payload, this._params)
         this.core.emit('lead', dat)
     }
 }

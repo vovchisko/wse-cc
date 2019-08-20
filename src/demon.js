@@ -20,6 +20,7 @@ class WseCCDemon extends WseClient {
 
         this.id = null
         this._payload = null
+        this._params = null
 
         this.ports_range = [4300, 4400]
         this.ports = {}
@@ -40,8 +41,9 @@ class WseCCDemon extends WseClient {
             this.force_stop()
             if (!this._connect_attempts) this.log('offline')
             this._connect_attempts++
-            setTimeout(() => this.connect(this._payload), this.re_connect_time)
+            setTimeout(() => this.connect(this._payload, this._params), this.re_connect_time)
         })
+
 
         this.on('message', (c, dat) => {
             let f = _isf(c)
@@ -137,10 +139,11 @@ class WseCCDemon extends WseClient {
         this.cores[dat.id].stop()
     }
 
-    connect(payload) {
+    connect(payload, params) {
         this.id = payload.id
         this._payload = payload
-        super.connect(payload)
+        this._params = params
+        super.connect(this._payload, this._params)
         return this
     }
 
