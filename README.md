@@ -6,10 +6,8 @@ Wait! Wait, wait. All this things based on [``wse``](https://www.npmjs.com/packa
 
 Look at [``wse``](https://www.npmjs.com/package/wse) before you start.
 
-## Wait, what?
-This package provides relatively simple system to manage game-instances with NodeJS and WebSocket. Let's say you have a game with bazillion rooms or levels and suddenly found that NodeJS is single thread thing. But this is the only thing you know good enough to develop your awesome MMORPG! (oh, just like me).
-
-I saw many great balancers, WebSocket wrappers, process managers, clusters and other things to solve task like this. But NOT EXACTLY THIS.
+## It is...
+This package provides relatively simple system to manage game-instances with NodeJS and WebSocket.
 
 ## Before we start – who is who?
 ``master`` - main process with known host/port. So, demons and users connecting here.
@@ -26,20 +24,11 @@ When we add new levels with ``master.spawn_core('my_instance_1')`` – master au
 
 Also for test (or for start) you can start master and demon on the same machine. It's fine.
 
-**How can I use it?**
+**How?**
  ~ There is an example + vue template for it - *https://github.com/vovchisko/wse-cc-template*
 
-**So... Can I use it for in game?**
+**Can I use it for in game?**
  ~ *Well... yes, I guess. I'm using :3*
-
-**Is it stable?**
- ~ *Not really.*
-
-**Will you maintain this package?**
- ~ *Sure. I'm using it a lot.*
-
-**What about Docs?**
- ~ *Well... It will be later, with more stable release I guess.*
 
 #### Oh, you still here..
 

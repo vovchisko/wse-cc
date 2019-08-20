@@ -4,4 +4,4 @@ module.exports = {
     WseCCCore: require('./src/core'),
     WseCCClient: require('./src/client'),
     WSE_REASON: require('wse').WSE_REASON,
-};
+}
