@@ -41,9 +41,11 @@ class WseCCMaster extends WseServer {
     client.core_id = core.id
     client.core_respond = null
 
+    const thema = this.use_ssl ? 'wss://' : 'ws://'
+
     client.send(_f('_lead'), {
       core: core.id,
-      addr: this.use_ssl ? 'wss://' : 'ws://' + demon.conn.pub_host + ':' + core.port + '/core/' + core.id,
+      addr: thema + demon.conn.pub_host + ':' + core.port + '/~' + core.id,
     })
   }
 
