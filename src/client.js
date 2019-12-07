@@ -29,7 +29,6 @@ class WseCCClient extends WseClient {
 
   _lead (dat) {
     if (this.core.is_online) this.core.close()
-    this.core.url = 'ws://' + dat.addr + '/ws-core'
     this.core.connect(this._payload, this._params)
     this.core.emit('lead', dat)
   }
