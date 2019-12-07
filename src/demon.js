@@ -58,7 +58,6 @@ class WseCCDemon extends WseClient {
     })
   }
 
-
   force_stop () {
     for (let i in this.cores) {
       this.cores[i].task = TASK_DESPAWN

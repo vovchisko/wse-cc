@@ -37,7 +37,6 @@ class WseCCCore extends WseServer {
         this.emit('ipc:' + msg.c, msg.dat)
       }
     })
-
   }
 
   get_ready () {

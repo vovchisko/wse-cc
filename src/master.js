@@ -13,6 +13,7 @@ class WseCCMaster extends WseServer {
   constructor (ws_params, on_auth, custom_protocol) {
     super(ws_params, on_auth, custom_protocol)
 
+    this.use_ssl = false
     this.emit_message_prefix = 'u:'
     this.emit_core_prefix = 'c:'
     this.emit_demon_prefix = 'd:'
@@ -40,7 +41,10 @@ class WseCCMaster extends WseServer {
     client.core_id = core.id
     client.core_respond = null
 
-    client.send(_f('_lead'), { core: core.id, addr: demon.conn.pub_host + ':' + core.port })
+    client.send(_f('_lead'), {
+      core: core.id,
+      addr: this.use_ssl ? 'wss://' : 'ws://' + demon.conn.pub_host + ':' + core.port + '/core/' + core.id,
+    })
   }
 
   send2core (core_id, c, dat) {
