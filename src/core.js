@@ -2,19 +2,21 @@ const WseServer = require('wse').WseServer
 const { _isf, _f } = require('./shared')
 
 class WseCCCore extends WseServer {
-  constructor (on_auth, wse_protocol) {
+  constructor (ws_params, on_auth, wse_protocol) {
     let _args = {}
     for (let i in process.argv) {
       let part = process.argv[i].split('=')
       if (part.length === 2) _args[part[0]] = part[1]
     }
 
-    super({ port: _args.port }, on_auth, wse_protocol)
+    if(!ws_params.server)
+
+    super(ws_params, on_auth, wse_protocol)
 
     this.id = _args.id
     this.args = _args
     this.props = {}
-
+    this.server = ws_params.server
 
     process.on('disconnect', () => {
       this.log('OH MY GOSH! PARENT DISCONNECTED!')
@@ -40,6 +42,7 @@ class WseCCCore extends WseServer {
   }
 
   get_ready () {
+    this.args.server.listen(this.args.port)
     this.ipc(_f('_core_ready'), this.args)
   }
 
