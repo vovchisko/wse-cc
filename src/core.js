@@ -1,5 +1,5 @@
 const WseServer = require('wse').WseServer
-const { _isf, _f } = require('./shared')
+const { _isf, _f, F_SIG } = require('./shared')
 
 class WseCCCore extends WseServer {
   constructor (ws_params, on_auth, wse_protocol) {
@@ -9,7 +9,7 @@ class WseCCCore extends WseServer {
       if (part.length === 2) _args[part[0]] = part[1]
     }
 
-    if(!ws_params.server)
+    if (!ws_params.server)
       throw new Error('WseCCCore: missed required parameter {server: http(s) instance}')
 
     super(ws_params, on_auth, wse_protocol)
@@ -30,7 +30,7 @@ class WseCCCore extends WseServer {
 
       if (f) {
         if (typeof this[f] === 'function') {
-          this.log('func:', f, msg.dat)
+          this.log(F_SIG + f, msg.dat)
           return this[f](msg.dat)
         } else {
           this.log(f, 'is not a function', msg.dat)

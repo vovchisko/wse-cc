@@ -13,4 +13,5 @@ function f (c) {
 module.exports = {
   _isf: isf,
   _f: f,
+  F_SIG,
 }

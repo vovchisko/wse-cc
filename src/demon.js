@@ -1,7 +1,6 @@
 const child_process = require('child_process')
 const os = require('os')
 const net = require('net')
-const extend = require('util')._extend
 
 const PORT_UNKNOWN = 'unknown'
 const PORT_FREE = 'free'
@@ -49,7 +48,7 @@ class WseCCDemon extends WseClient {
       let f = _isf(c)
       if (f) {
         if (typeof this[f] === 'function') {
-          this.log('func:', f, dat)
+          this.log(c, dat)
           return this[f](dat)
         } else {
           this.log(c, 'is not a function', dat)
@@ -244,7 +243,7 @@ class DemonCore {
     let f = _isf(msg.c)
     if (f) {
       if (typeof this[f] === 'function') {
-        this.log(f, msg.dat)
+        this.log(msg.c, msg.dat)
         return this[f](msg.dat)
       } else {
         this.log(msg.c + ' is not a function', msg.dat)

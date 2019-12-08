@@ -110,10 +110,10 @@ class WseCCMaster extends WseServer {
       let f = _isf(c)
       if (f) {
         if (typeof this[f] === 'function') {
-          this.log(demon.id, f, dat)
+          this.log(demon.id, c, dat)
           this[f](demon, dat)
         } else {
-          this.log(f, 'is not a function', dat)
+          this.log(c, 'is not a function', dat)
         }
       } else {
         if (!this.emit(this.emit_demon_prefix + c, demon.id, dat) && this.emit_messages_ignored)
