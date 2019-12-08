@@ -10,6 +10,7 @@ class WseCCCore extends WseServer {
     }
 
     if(!ws_params.server)
+      throw new Error('WseCCCore: missed required parameter {server: http(s) instance}')
 
     super(ws_params, on_auth, wse_protocol)
 
@@ -42,7 +43,7 @@ class WseCCCore extends WseServer {
   }
 
   get_ready () {
-    this.args.server.listen(this.args.port)
+    this.server.listen(this.args.port)
     this.ipc(_f('_core_ready'), this.args)
   }
 
