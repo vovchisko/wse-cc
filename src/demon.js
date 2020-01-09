@@ -24,6 +24,7 @@ class WseCCDemon extends WseClient {
     this.ports_range = [ 4300, 4400 ]
     this.ports = {}
     this.re_connect_time = 5000
+    this.log_f_calls = false
 
     for (let i = this.ports_range[0]; i < this.ports_range[1]; i++)
       this.ports[i] = { port: i, state: PORT_UNKNOWN, by: null, err: null }
@@ -32,7 +33,7 @@ class WseCCDemon extends WseClient {
     this._connect_attempts = 0
 
     this.on('open', () => {
-      this.log(`online! (att: ${this._connect_attempts + 1})`)
+      this.log(`online! (att: ${ this._connect_attempts + 1 })`)
       this._connect_attempts = 0
     })
 
@@ -48,7 +49,7 @@ class WseCCDemon extends WseClient {
       let f = _isf(c)
       if (f) {
         if (typeof this[f] === 'function') {
-          this.log(c, dat)
+          if (this.log_f_calls) this.log(c, dat)
           return this[f](dat)
         } else {
           this.log(c, 'is not a function', dat)
@@ -194,16 +195,16 @@ class DemonCore {
 
     if (this.args && this.args.debug) {
       if (this.args.debug === true) {
-        this.debug_port = `9${this.port.toString().substr(1)}`
+        this.debug_port = `9${ this.port.toString().substr(1) }`
       } else {
         this.debug_port = this.args.debug
       }
-      this.log(`core ${this.id} starting in debug mode and waiting for debugger! port:${this.debug_port}`)
+      this.log(`core ${ this.id } starting in debug mode and waiting for debugger! port:${ this.debug_port }`)
     }
 
     this.child = child_process.fork(this.cmd, cmd_args, {
       silent: true,
-      execArgv: this.debug_port ? [ `--inspect-brk=${this.debug_port}` ] : [],
+      execArgv: this.debug_port ? [ `--inspect-brk=${ this.debug_port }` ] : [],
     })
 
 

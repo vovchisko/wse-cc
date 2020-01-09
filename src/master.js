@@ -212,7 +212,7 @@ class WseCCMaster extends WseServer {
   }
 
   spawn_core (id, cmd, args) {
-    if (this.cores[id]) throw new Error(`Core '${id}' already spawned!`)
+    if (this.cores[id]) throw new Error(`Core '${ id }' already spawned!`)
 
     let core = this.cores[id] = {
       id: id,
@@ -231,7 +231,7 @@ class WseCCMaster extends WseServer {
   }
 
   despawn_core (id, deadly = true) {
-    if (!this.cores[id]) throw new Error(`Unable to terminate core '${id}' not exists`)
+    if (!this.cores[id]) throw new Error(`Unable to terminate core '${ id }' not exists`)
 
     let core = this.cores[id]
 
