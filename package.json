@@ -1,7 +1,7 @@
 {
   "name": "wse-cc",
   "version": "3.0.4",
-  "description": "cheap and crazy multi-server instance management if nothing else helped",
+  "description": "Manual multi-server client/instance management. If nothing else helped.",
   "main": "node.js",
   "browser": "browser.js",
   "scripts": {
@@ -13,8 +13,8 @@
   },
   "keywords": [
     "websocket",
+    "server",
     "multi-server",
-    "ballancer",
     "websocket-auth",
     "ws-auth",
     "ws-protocol"
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/vovchisko/wse-cc#readme",
   "dependencies": {
-    "wse": "^2.0.2"
+    "wse": "^2.0.3"
   }
 }
