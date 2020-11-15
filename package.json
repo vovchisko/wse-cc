@@ -1,6 +1,6 @@
 {
   "name": "wse-cc",
-  "version": "3.0.6",
+  "version": "3.0.7",
   "description": "Manual multi-server client/instance management. If nothing else helped.",
   "main": "node.js",
   "browser": "browser.js",
